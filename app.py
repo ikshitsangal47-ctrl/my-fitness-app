@@ -64,19 +64,42 @@ with tab1:
             st.error(f"Database Error: {e}")
 
 with tab2:
-    st.header("Update Personal Stats")
-    h = st.number_input("Height (cm)", min_value=0)
-    w = st.number_input("Weight (kg)", min_value=0)
-    if st.button("Update Profile"):
+    # --- TAB 2: PERSONAL INFO & BMI CALCULATOR ---
+with tab2:
+    st.header("Update Stats & Calculate BMI")
+    
+    # Input fields for Height and Weight
+    h_cm = st.number_input("Height (in cm)", min_value=50, max_value=250, value=170)
+    w = st.number_input("Weight (in kg)", min_value=10, max_value=300, value=70)
+    
+    if st.button("Update Profile & Get BMI"):
         try:
+            # BMI Calculation Logic
+            h_m = h_cm / 100  # cm ko meter mein convert kiya
+            bmi = round(w / (h_m ** 2), 2)
+            
+            # Database mein data save karne ke liye
             conn = get_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO personal_records (date, height, weight) VALUES (CURRENT_DATE, %s, %s)", (h, w))
+            cursor.execute("INSERT INTO personal_records (date, height, weight) VALUES (CURRENT_DATE, %s, %s)", (h_cm, w))
             conn.commit()
             conn.close()
-            st.success("Stats Updated!")
+            
+            st.divider()
+            st.subheader(f"Tera BMI hai: {bmi}")
+            
+            # BMI Status Categories
+            if bmi < 18.5:
+                st.warning("Status: Underweight (Bhai thoda dhyan do sehat pe!)")
+            elif 18.5 <= bmi <= 24.9:
+                st.success("Status: Normal (Ekdum mast fit ho!)")
+            elif 25.0 <= bmi <= 29.9:
+                st.info("Status: Overweight (Thoda cardio aur diet manage karo)")
+            else:
+                st.error("Status: Obese (Bhai mehnat shuru karni padegi!)")
+                
         except Exception as e:
-            st.error(f"Database Error: {e}")
+            st.error(f"Error: {e}")
 
 with tab3:
     st.header("Your Fitness History")
