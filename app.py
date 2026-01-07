@@ -2,13 +2,12 @@ import streamlit as st
 import psycopg2
 import pandas as pd
 
-# --- NEW SUPABASE CONNECTION (Using Transaction Pooler Port 6543) ---
+# --- CONNECTION USING YOUR EXACT SCREENSHOT DETAILS ---
 def get_connection():
     return psycopg2.connect(
-        # Yahan humne host ke beech mein 'pooler' add kiya hai aur port 6543
-        host="db.b0tddfsqahnvacnfmazi.supabase.co", 
-        user="postgres.b0tddfsqahnvacnfmazi", # Naya User format (Project ID ke saath)
-        password="bhaifitness2026", 
+        host="aws-1-ap-southeast-1.pooler.supabase.com", 
+        user="postgres.dndhhsfobtodnbwcwndr", 
+        password="BhaiFitness2026", # Yahan apna reset kiya hua password dalo
         database="postgres",
         port=6543, 
         sslmode="require"
@@ -53,6 +52,7 @@ with tab3:
     st.header("Your Fitness History")
     try:
         conn = get_connection()
+        # Data fetch karne ki query
         df = pd.read_sql("SELECT date, calories FROM daily_records ORDER BY date DESC", conn)
         conn.close()
         if not df.empty:
