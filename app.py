@@ -2,12 +2,12 @@ import streamlit as st
 import mysql.connector
 import pandas as pd
 
-# --- DATABASE CONNECTION ---
+# --- DATABASE CONNECTION (SUPABASE) ---
 def get_connection():
     return mysql.connector.connect(
         host="db.b0tddfsqahnvacnfmazi.supabase.co", 
         user="postgres",
-        password="bhai fitness @123",  # Tera ekdum sahi password yahan daal diya hai
+        password="bhai fitness @123",  # Tera ekdum sahi password
         database="postgres",
         port=5432
     )
@@ -15,7 +15,6 @@ def get_connection():
 st.set_page_config(page_title="Fitness Tracker", layout="wide")
 st.title("💪 My Fitness & Calorie Tracker")
 
-# Tabs for Navigation
 tab1, tab2, tab3 = st.tabs(["Daily Logs", "Personal Info", "View Progress"])
 
 with tab1:
@@ -31,7 +30,7 @@ with tab1:
             conn.close()
             st.success("Entry Saved Successfully!")
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.error(f"Database Error: {e}")
 
 with tab2:
     st.header("Update Personal Stats")
@@ -41,12 +40,12 @@ with tab2:
         try:
             conn = get_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO personal_records (date, height, weight) VALUES (CURDATE(), %s, %s)", (h, w))
+            cursor.execute("INSERT INTO personal_records (date, height, weight) VALUES (NOW(), %s, %s)", (h, w))
             conn.commit()
             conn.close()
             st.success("Stats Updated!")
         except Exception as e:
-            st.error(f"Error: {e}")
+            st.error(f"Database Error: {e}")
 
 with tab3:
     st.header("Your Fitness History")
@@ -61,5 +60,3 @@ with tab3:
             st.info("No data found. Start logging!")
     except Exception as e:
         st.error(f"Error loading data: {e}")
-
-
