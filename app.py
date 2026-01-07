@@ -1,15 +1,15 @@
 import streamlit as st
-import mysql.connector
+import psycopg2  # MySQL ki jagah psycopg2 use hoga
 import pandas as pd
 
-# --- DATABASE CONNECTION (SUPABASE) ---
+# --- DATABASE CONNECTION (SUPABASE POSTGRES) ---
 def get_connection():
-    return mysql.connector.connect(
+    return psycopg2.connect(
         host="db.b0tddfsqahnvacnfmazi.supabase.co", 
         user="postgres",
-        password="bhai fitness @123",  # Tera ekdum sahi password
+        password="bhai fitness @123", 
         database="postgres",
-        port=5432
+        port=5432  # Supabase ka port hamesha 5432 hota hai
     )
 
 st.set_page_config(page_title="Fitness Tracker", layout="wide")
@@ -40,7 +40,7 @@ with tab2:
         try:
             conn = get_connection()
             cursor = conn.cursor()
-            cursor.execute("INSERT INTO personal_records (date, height, weight) VALUES (NOW(), %s, %s)", (h, w))
+            cursor.execute("INSERT INTO personal_records (date, height, weight) VALUES (CURRENT_DATE, %s, %s)", (h, w))
             conn.commit()
             conn.close()
             st.success("Stats Updated!")
