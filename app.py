@@ -1,15 +1,17 @@
 import streamlit as st
-import psycopg2  # MySQL ki jagah psycopg2 use hoga
+import psycopg2
 import pandas as pd
 
-# --- DATABASE CONNECTION (SUPABASE POSTGRES) ---
+# --- NEW SUPABASE CONNECTION (Using Transaction Pooler Port 6543) ---
 def get_connection():
     return psycopg2.connect(
+        # Yahan humne host ke beech mein 'pooler' add kiya hai aur port 6543
         host="db.b0tddfsqahnvacnfmazi.supabase.co", 
-        user="postgres",
+        user="postgres.b0tddfsqahnvacnfmazi", # Naya User format (Project ID ke saath)
         password="bhai fitness @123", 
         database="postgres",
-        port=5432  # Supabase ka port hamesha 5432 hota hai
+        port=6543, 
+        sslmode="require"
     )
 
 st.set_page_config(page_title="Fitness Tracker", layout="wide")
