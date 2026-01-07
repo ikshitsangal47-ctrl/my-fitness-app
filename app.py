@@ -9,7 +9,7 @@ def get_connection():
         user="postgres.dndhhsfobtodnbwcwndr", 
         password="bhaifitness2026", 
         database="postgres",
-        port=5437, 
+        port=6543, 
         sslmode="require"
     )
 
