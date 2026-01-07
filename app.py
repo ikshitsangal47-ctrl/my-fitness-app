@@ -8,7 +8,7 @@ def get_connection():
         # Yahan humne host ke beech mein 'pooler' add kiya hai aur port 6543
         host="db.b0tddfsqahnvacnfmazi.supabase.co", 
         user="postgres.b0tddfsqahnvacnfmazi", # Naya User format (Project ID ke saath)
-        password="bhai fitness @123", 
+        password="bhaifitness2026", 
         database="postgres",
         port=6543, 
         sslmode="require"
